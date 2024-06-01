@@ -12,7 +12,7 @@ import logging
 from pymongo import MongoClient
 import os
 from bson.json_util import dumps, loads 
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 
 
 ###
@@ -134,6 +134,7 @@ def display():
         return render_template("display.html", controls=loads(dumps(controls)))
 
 
+
 ###
 # Flask-Restful API starts here
 ###
@@ -141,14 +142,113 @@ def display():
 
 # Helper function to retrieve all open, close times from "controls" collection.
 # Returns a python dict with these times.
-def get_times(): 
+def get_times(top, get_open=True, get_close=True): 
     collection = db.controls
-    times = { "times": [] } 
+    times = { "times": [] }
     for open_close_time in collection.find({}, {'_id': 0, \
                                                 'open': 1, 'close': 1 }):
-        times["times"].append(open_close_time)
+        times["times"].append(open_close_time) 
     app.logger.debug(f"Open and close times from db = {times}")
+
+    if not get_open: 
+        for dct in times['times']: 
+            del dct['open'] 
+
+    if not get_close: 
+        for dct in times['times']:
+            app.logger.debug(f'Individual dct is {dct}')
+            del dct['close'] 
+
+    if not get_open or not get_close: 
+        times_arr = times['times']
+        sorted_times_arr = sort_times(times_arr, top) 
+        times['times'] = sorted_times_arr
+ 
     return times
+
+
+def sort_times(times_arr, top): 
+    ''' 
+    Input is an array whose elements are all Python dictionaries with a 
+    single field which is either 'open' or 'close' for all dictionaries in that
+    array
+
+    Returns an array with the same dictionaries, but this time sorted in 
+    ascending order by the time given in the field value of 'open'/'close' 
+    '''
+
+    temp_arr = []
+    # Get string 'open' or string 'close' from the dictionaries in the array
+    open_or_close = next(iter(times_arr[0]))
+    for dct in times_arr: 
+        key, value =  next(iter(dct.items()))
+        app.logger.debug(f'value from dct is {value}')
+        arrow_obj = arrow.get(value, 'ddd M/D H:mm')
+        temp_arr.append(arrow_obj)
+    app.logger.debug(f"Initially, temporary array of arrow objects is {temp_arr}")
+    sorted_temp_arr = sorted(temp_arr) 
+    app.logger.debug(f"After sorting, temporary array of arrow objects is" + 
+                    f"{sorted_temp_arr}")
+    return_arr = []
+    # Logic to deal with taking the top k times is implemented here as well 
+    for arrow_obj in sorted_temp_arr: 
+        if top > 0: 
+            date_str = arrow_obj.format('ddd M/D H:mm') 
+            new_dict = { open_or_close: date_str } 
+            return_arr.append(new_dict)
+            top -= 1 
+    app.logger.debug(f'Sorted array of dictionaries should now be: {return_arr}')
+    return return_arr
+
+class ListAll(Resource): 
+    def get(self, data_format='json'): 
+
+        top = request.args.get('top', default = 10**20, type=int) 
+        app.logger.debug(f'top variable has value {top}')
+
+        times = get_times(top, get_open=True, get_close=True)
+
+        if data_format == 'csv': 
+            times_csv = csv_convert(times, get_open=True, get_close=True) 
+            return times_csv 
+        else: 
+            return flask.jsonify(times) 
+        
+
+class ListOpenOnly(Resource): 
+    def get(self, data_format='json'): 
+        
+        top = request.args.get('top', default = 10**20, type=int) 
+        app.logger.debug(f'top variable has value {top}')
+
+        times = get_times(top, get_open=True, get_close=False)
+
+        if data_format == 'csv': 
+            times_csv = csv_convert(times, get_open=True, get_close=False) 
+            return times_csv 
+        else: 
+            return flask.jsonify(times) 
+
+
+class ListCloseOnly(Resource): 
+    def get(self, data_format='json'): 
+        
+        top = request.args.get('top', default = 10**20, type=int) 
+        app.logger.debug(f'top variable has value {top}')
+
+        times = get_times(top, get_open=False, get_close=True)
+
+        if data_format == 'csv': 
+            times_csv = csv_convert(times, get_open=False, get_close=True) 
+            return times_csv 
+        else:
+            return flask.jsonify(times) 
+
+
+api.add_resource(ListAll, '/listAll', '/listAll/<string:data_format>')
+api.add_resource(ListOpenOnly, '/listOpenOnly', '/listOpenOnly/<string:data_format>')
+api.add_resource(ListCloseOnly, '/listCloseOnly', \
+                '/listCloseOnly/<string:data_format>')
 
 
 # Given a JSON structure, will return the structure in csv format as a string
@@ -170,57 +270,6 @@ def csv_convert(times, get_open, get_close):
     app.logger.debug(f"CSV string of times is {times_str}") 
     app.logger.debug(f"Combined CSV string with labels and times is {combined}")
     return combined   
-
-
-class ListAll(Resource): 
-    def get(self, data_format='json'): 
-        times = get_times()
-        if data_format == 'csv': 
-            times_csv = csv_convert(times, get_open=True, get_close=True) 
-            return times_csv 
-        else: 
-            return flask.jsonify(times) 
-        
-
-class ListOpenOnly(Resource): 
-    def get(self, data_format='json'): 
-        times = get_times()
-        if data_format == 'csv': 
-            times_csv = csv_convert(times, get_open=True, get_close=False) 
-            return times_csv 
-        else: 
-            for dct in times["times"]: 
-                del dct["close"]
-            return flask.jsonify(times) 
-
-
-class ListCloseOnly(Resource): 
-    def get(self, data_format='json'): 
-        times = get_times()
-        if data_format == 'csv': 
-            times_csv = csv_convert(times, get_open=False, get_close=True) 
-            return times_csv 
-        else:
-            for dct in times["times"]: 
-                del dct["open"] 
-            return flask.jsonify(times)  
-
-api.add_resource(ListAll, '/listAll', '/listAll/<string:data_format>')
-api.add_resource(ListOpenOnly, '/listOpenOnly', '/listOpenOnly/<string:data_format>')
-api.add_resource(ListCloseOnly, '/listCloseOnly', \
-                 '/listCloseOnly/<string:data_format>')
-
-""" 
-Questions for Nate: 
-Is having many URIs for one resource and then parsing the URI a good approach here? 
-Should my data have a label for the  brevet distance or anything? Does my JSON look right? 
-Should I return the csv as another file or something? If not, what does it mean to expose a CSV file for use by an API? 
-
-Notes: 
-Can just parse the URI like I was thinking all within the single method 
-Only need open and close times. Can be useful to have the other stuff but not needed 
-I can return the csv as a file or as a string. Seems easier to me to just deal with it as a string
-""" 
 
 
 #############

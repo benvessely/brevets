@@ -139,7 +139,6 @@ def display():
 # Flask-Restful API starts here
 ###
 
-
 # Helper function to retrieve all open, close times from "controls" collection.
 # Returns a python dict with these times.
 def get_times(top, get_open=True, get_close=True): 

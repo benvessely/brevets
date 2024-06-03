@@ -6,6 +6,12 @@ Addition of a RESTful API on top of the database and website functionality from 
 
 Finalized by Ben Vessely; initial code by UO CS faculty.
 
+## Running the program
+The main code is within the brevets_proj6 subdirectory of the main proj6-rest-vessely repository. Simply enter this subdirectory and run docker-compose up --build to get the program running.  
+
+## Consumer Program
+It is getting late on Friday night, and I am having weird issues with getting the JSON data into my php program from the API endpoint. I tried using the file_get_contents() function and using cURL, but in both cases, I was getting None from the API even though I wasn't getting a cURL error. I performed a bunch of debugging/troubleshooting steps with the help of Copilot, but none of them worked; I will therefore skip the consumer program for now. The API should still be testable just by providing the desired additions to localhost:5000 in your browser, of course. 
+
 ## API endpoints
 
 There are many endpoints that were added to the API in this project. Change the values for host and port according to your machine, and use the web browser to check the results.
@@ -32,5 +38,3 @@ There are many endpoints that were added to the API in this project. Change the 
     * `http://<host:port>/listCloseOnly/json?top=4` should return top 4 close times only (in ascending order) in JSON format
 
 
-## Consumer Program
-It is getting late on Friday night, and I am having weird issues with getting the JSON data into my php program from the API endpoint. I tried using the file_get_contents() function and using cURL, but in both cases, I was getting None from the API even though I wasn't getting a cURL error. I performed a bunch of debugging/troubleshooting steps with the help of Copilot, but none of them worked; I will therefore skip the consumer program for now. The API should still be testable just by providing the desired additions to localhost:5000 in your browser, of course. 

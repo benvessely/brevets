@@ -11,22 +11,12 @@ import arrow
 # interval (km) on which minimum and maximum speeds will be defined. The third 
 # attribute of the tuple is the minimum speed (km/hr) on that interval, and the
 # fourth attribute is the maximum speed (km/hr) on that interval. 
- 
 SPEEDS = [(0, 200, 15, 34), (200, 400, 15, 32), (400, 600, 15, 30), 
           (600, 1000, 11.428, 28), (1000, 1300, 13.333, 26)] 
 
 BREVET_TIMES = { 200: (5 + 33/60, 13 + 30/60), 300: (9, 20), 400: (12 + 8/60, 27), 
                 600: (18 + 48/60, 40), 1000: (39, 75) } 
 
-
-#  Note for CIS 322 Fall 2016:
-#  You MUST provide the following two functions
-#  with these signatures, so that I can write
-#  automated tests for grading.  You must keep
-#  these signatures even if you don't use all the
-#  same arguments.  Arguments are explained in the
-#  javadoc comments.
-#
 
 def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
     """
@@ -63,23 +53,6 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
 
     return open_time.isoformat() 
 
-
-
-'''
-Thinking: 
-
-Okay so how is this going to work. I will calculate the opening time for the 
-control by splitting it up into components based on the specified intervals.
-If the control distance is within 15 miles of the brevet distance, I will just 
-calculate the time for that control as if it was at the brevet distance. 
-This is true even if there are multiple controls within 15km of the brevet
-distance. 
-
-I will also have to factor inthat I might overrun on incremdent hours, days,  
-months, or years in my calculation. If so, I will need to increment those 
-counters correspondingly. I need to make sure I'm watching out for weird edge 
-cases here. 
-'''
 
 def time_to_open(control_dist_km, brevet_dist_km):
     if control_dist_km < 0:
@@ -131,14 +104,6 @@ def time_to_open(control_dist_km, brevet_dist_km):
     # print(f"MY DEBUG: While loop done, output of time_to_open: {time_delta}\n") #DB 
 
     return time_delta 
-
-
-''' 
-What special cases am I going to have to consider here? Distance negative, 
-control greater than brevet, control at 0 (works I think), control within 10 miles of 
-brevet distance. 
-''' 
-
 
 
 def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
@@ -215,14 +180,3 @@ def time_to_close(control_dist_km, brevet_dist_km):
 
     print(f"MY DEBUG: While loop done, output of time_to_close: {time_delta}\n") #DB 
     return time_delta 
-
-
-
-'''
-Notes from Meeting: There will be tests for weird cases. What if control point is 0. What if control point is after brevet distance? 
-
-Basically just put handling of ambiguity in the README so he knows how we are interpreting this. 
-
-print statements do not work within docker, so I would have to just run the app without docker to get that to work 
-
-''' 

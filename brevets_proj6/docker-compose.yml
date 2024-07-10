@@ -16,16 +16,16 @@ services:
     command: mongod --quiet --logpath /dev/null
     volumes: 
       - dbdata:/data/db
-  # consumer-site: 
-  #   image: php:apache
-  #   volumes:
-  #     - ./consumer_site:/var/www/html 
-  #   ports:
-  #     - 5001:80  # host:container
-  #   links:
-  #     - brevets-and-api  # Add this line
-  #   depends_on:
-  #     - brevets-and-api
-  #     - db 
+  consumer-site: 
+    image: php:apache
+    volumes:
+      - ./consumer_site:/var/www/html 
+    ports:
+      - 5001:80  # host:container
+    links:
+      - brevets-and-api  # Add this line
+    depends_on:
+      - brevets-and-api
+      - db 
 volumes: 
   dbdata:

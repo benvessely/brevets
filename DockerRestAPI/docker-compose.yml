@@ -1,5 +1,3 @@
-version: '3'  # version of compose format 
-
 services:
   laptop-service:
     build: ./laptop  

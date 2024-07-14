@@ -1,7 +1,0 @@
-arrow
-pynose
-pep8
-autopep8
-flask
-pymongo
-Flask-RESTful

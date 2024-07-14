@@ -1,0 +1,31 @@
+services:
+  brevets-and-api:
+    build: .
+    command: python3 -u flask_brevets.py
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/usr/src/app
+    links:
+      - db
+    environment: 
+      - DB_PORT_27017_TCP_ADDR=db
+  db:
+    image: mongo:latest
+    user: root
+    command: mongod --quiet --logpath /dev/null
+    volumes: 
+      - dbdata:/data/db
+  consumer-site: 
+    image: php:apache
+    volumes:
+      - ./consumer_site:/var/www/html 
+    ports:
+      - 5001:80  # host:container
+    links:
+      - brevets-and-api 
+    depends_on:
+      - brevets-and-api
+      - db 
+volumes: 
+  dbdata:

@@ -72,28 +72,51 @@ $(document).ready(function(){
            calc_times(control_entry);
         });
 
-   });   // end of what we do on document ready
 
+    // Below makes return key behave well when dealing with our html elements
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    // Get all input elements inside the table
-    var inputs = document.querySelectorAll('.control_time_table input');
-    for(var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('keydown', function(e) {
+    var start_options = document.querySelectorAll('.startOptions'); 
+    var table_inputs = document.querySelectorAll('.control_time_table input');
+
+    for (var i = 0; i < start_options.length; i++) {
+        start_options[i].addEventListener('keydown', function(e) { 
+            if (e.key === "Enter") {
+                e.preventDefault();
+                var index = Array.prototype.indexOf.call(start_options, e.target); 
+                // For first two startOption elements, return key just moves to next one
+                if (index < start_options.length - 1) { 
+                    start_options[index + 1].focus();
+                } 
+                // For final startOption element (time), return moves into table
+                else if (index === start_options.length - 1) { 
+                    table_inputs[0].focus(); 
+                }
+            }
+        });
+    }
+    
+    for(var i = 0; i < table_inputs.length; i++) {
+        table_inputs[i].addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();  // Prevent form submission
-                var index = Array.prototype.indexOf.call(inputs, e.target);
+                var index = Array.prototype.indexOf.call(table_inputs, e.target);
                 // Check if index not in last row 
-                if (index < inputs.length - 5) {        
+                if (index < table_inputs.length - 5) {        
                     // Focus the input element directly below, or 5 right in the array
-                    inputs[index + 5].focus(); 
+                    table_inputs[index + 5].focus(); 
                 } else { // If in last row, return key just moves focus one to right
                     $("#submit").focus(); 
                 }
             }
         });
     }
-});
+    
+}); 
+
+
+
+
+
 
 
 

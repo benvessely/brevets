@@ -37,7 +37,7 @@
 
 
 <!-- Design on bootstrap grid -->
-<form role="form" action="/submit" method="POST" id=mainForm>
+<form role="form" action="/submit" method="POST" id="mainForm">
 <div class="row">
   <div class="col-md-4">
     <label>Distance</label>
@@ -101,8 +101,8 @@
   <!-- Using html formactions, which allow different actions to be performed on the 
    form based on which button was pressed. The default action (specified at the
    opening tag for the form) is "/submit", and the custom action is "/display" -->
-  <input type="submit" value="Submit" id="submit"> 
-  <input type="submit" value="Display" formaction="/display" formmethod="GET" id="display">
+  <input type="submit" value="Submit" id="submitInput"> 
+  <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
       
   {% with messages = get_flashed_messages() %}  
     {% if messages|length != 0 %}

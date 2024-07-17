@@ -1,129 +1,118 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 
-<html> <head>
-<title>ACP Controle Times</title>
+<html>
+
+<head>
+  <title>ACP Controle Times</title>
 
   <!-- 'viewport' is used by bootstrap to respond to device size -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Javascript:  JQuery from a content distribution network (CDN) -->
-  <script
-     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
   </script>
 
   <!-- Bootstrap includes javascript and css  (must follow jquery) -->
-  <link rel="stylesheet"
-   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-   <script
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
-   </script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+  </script>
 
   <!-- moment.js is the JavaScript equivalent of arrow.py -->
-  <script 
-    src="{{ url_for('static', filename="js/moment.min.js") }}"></script>
+  <script src="{{ url_for('static', filename="js/moment.min.js") }}"></script>
 
 
 </head>
 
-   <!-- Our own style sheet -->
-   <link rel="stylesheet" href="/static/css/calc.css" />
+<!-- Our own style sheet -->
+<link rel="stylesheet" href="/static/css/calc.css" />
 
 <body>
-<!-- bootstrap requires a 'container' div around content -->
-<div class="container">
+  <!-- bootstrap requires a 'container' div around content -->
+  <div class="container">
 
-<h1>ACP Brevet Times</h1>
-  <p>This worksheet is for ACP-sanctioned brevets between 200 and 1000 kilometers</p>
+    <h1>ACP Brevet Times</h1>
+    <p>This worksheet is for ACP-sanctioned brevets between 200 and 1000 kilometers</p>
 
 
-<!-- Design on bootstrap grid -->
-<form role="form" action="/submit" method="POST" id="mainForm">
-<div class="row">
-  <div class="col-md-4">
-    <label>Distance</label>
-  <select name="distance" id="brevet_dist_km" class="startOptions">
-    <option value="200">200km</option>
-    <option value="300">300km</option>
-    <option value="400">400km</option>
-    <option value="600">600km</option>
-    <option value="1000">1000km</option>
-  </select>
-  </div> <!-- columns 1--4  -->
-  <div class="col-md-6">
-    <label>Begins at</label>
-    <input type=date name="begin_date" id="begin_date" value="2017-01-01" 
-         class="startOptions"/>
-    <input type=time name="begin_time" id="begin_time" value="00:00" 
-         class="startOptions" />
-  </div> <!-- columns 5-10 -->
-  </div> <!-- row -->
+    <!-- Design on bootstrap grid -->
+    <form role="form" action="/submit" method="POST" id="mainForm">
+      <div class="row">
+        <div class="col-md-4">
+          <label>Distance</label>
+          <select name="distance" id="brevet_dist_km" class="startOptions">
+            <option value="200">200km</option>
+            <option value="300">300km</option>
+            <option value="400">400km</option>
+            <option value="600">600km</option>
+            <option value="1000">1000km</option>
+          </select>
+        </div> <!-- columns 1--4  -->
+        <div class="col-md-6">
+          <label>Begins at</label>
+          <input type=date name="begin_date" id="begin_date" value="2017-01-01" class="startOptions" />
+          <input type=time name="begin_time" id="begin_time" value="00:00" class="startOptions" />
+        </div> <!-- columns 5-10 -->
+      </div> <!-- row -->
 
-  <br />  <!-- Cosmetic -- a little vertical space -->
-  <!-- Although we do not use tables for general page layout, they are
-       appropriate for something that really is a table, like this
-       one.  We allocate it the full 12 columns of the bootstrap grid.
-  -->
-  <div class="row">
-  <div class="col-md-12"> 
-  <table class="control_time_table">
-      <tr>
-	<th> Miles </th>
-	<th> Km </th>
-	<th>Location</th>
-	<th>Open</th>
-	<th>Close</th>
-	<th>Notes</th>
-      </tr>
-   {% for row in range(20) %}
-    <tr class="control">
-      <!-- Dist (mi) -->
-      <td><input name="miles" type="number" step=.1
-           min="0" max="900" size="5" /></td>
-      <!-- Dist (km) -->
-      <td><input name="km" type="number" step=.1
-	   min="0" max="1100" size="5" /> </td>
-      <!-- Location (optional) -->
-      <td><input name="location" type="text" 
-        placeholder="Optional location name"
-	size="20" /> </td>
-      <!-- Open time (read only, set by JavaScript function -->
-      <td><input name="open" type="datetime" value="" readonly /></td>
-      <!-- Close time (read only, set by JavaScript function -->
-      <td><input name="close" type="datetime" value="" readonly /></td>
-      <!-- Notes (error messages for this row) -->
-      <td class="notes"> &nbsp; </td>
-    </tr>
-    {% endfor %}
-  </table>
-  </div> <!-- col -->
-  </div> <!-- row -->
+      <br /> <!-- Cosmetic -- a little vertical space -->
+      
+      <!-- Errors go in this p tag -->
+      <p id="errorMessages"></p>
 
-  <!-- Using html formactions, which allow different actions to be performed on the 
+      <div class="row">
+        <div class="col-md-12">
+          <table class="control_time_table">
+            <tr>
+              <th> Miles </th>
+              <th> Km </th>
+              <th>Location</th>
+              <th>Open</th>
+              <th>Close</th>
+              <th>Notes</th>
+            </tr>
+            {% for row in range(20) %}
+            <tr class="control">
+              <!-- Dist (mi) -->
+              <td><input name="miles" type="number" step=.1 min="0" max="900" size="5" /></td>
+              <!-- Dist (km) -->
+              <td><input name="km" type="number" step=.1 min="0" max="1100" size="5" /> </td>
+              <!-- Location (optional) -->
+              <td><input name="location" type="text" placeholder="Optional location name" size="20" /> </td>
+              <!-- Open time (read only, set by JavaScript function -->
+              <td><input name="open" type="datetime" value="" readonly /></td>
+              <!-- Close time (read only, set by JavaScript function -->
+              <td><input name="close" type="datetime" value="" readonly /></td>
+              <!-- Notes (error messages for this row) -->
+              <td name="notes" class="notes"> &nbsp; </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div> <!-- col -->
+      </div> <!-- row -->
+
+      <!-- Using html formactions, which allow different actions to be performed on the 
    form based on which button was pressed. The default action (specified at the
    opening tag for the form) is "/submit", and the custom action is "/display" -->
-  <input type="submit" value="Submit" id="submitInput"> 
-  <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
-      
-  {% with messages = get_flashed_messages() %}  
-    {% if messages|length != 0 %}
+      <input type="submit" value="Submit" id="submitInput">
+      <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages|length != 0 %}
       <p class="message"> {{messages[0]}}</p>
-    {% endif %}    
-  {% endwith %} 
-</form>
+      {% endif %}
+      {% endwith %}
+    </form>
 
 
-<!-- SCRIPT_ROOT variable used in the calc.js file below; defined here for templating -->
-<script>
-  var SCRIPT_ROOT = {{ request.script_root|tojson|safe }} ;
-</script>  
+    <!-- SCRIPT_ROOT variable used in the calc.js file below; defined here for templating -->
+    <script>
+      var SCRIPT_ROOT = {{ request.script_root| tojson | safe }};
+    </script>
 
-<script 
-   src="{{ url_for('static', filename="js/calc.js") }}">
-</script>
+    <script src="{{ url_for('static', filename="js/calc.js") }}">
+    </script>
 
-</div>
-</body> </html>
+  </div>
+</body>
 
-
-
-
+</html>

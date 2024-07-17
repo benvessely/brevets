@@ -31,9 +31,9 @@ function calc_times(control) {
             console.log("Got a response: " + JSON.stringify(times));
             console.log("Response.open = " + times.open);
             // console.log(`moment.utc(times.open) = ${moment(times.open)}`);
-            console.log(`Type of Response.open is ${typeof times.open}`);
-            // If we had valid control distance and thus server returned isoformat string
-            // We check times.open since also checking times.close is redundant here
+            // console.log(`Type of Response.open is ${typeof times.open}`);
+            // If we had valid control distance and thus server returned isoformat string,
+            // we check times.open since also checking times.close is redundant here
             if (typeof times.open === 'string') {
                 open_time_field.val(moment.utc(times.open).format("ddd M/D H:mm"));
                 close_time_field.val(moment.utc(times.close).format("ddd M/D H:mm"));
@@ -52,10 +52,15 @@ $(document).ready(function () {
     
     $('input[name="km"]').change(
         function (event) {
+            var control_entry = $(this).parents(".control")
+
+            var notes = control_entry.find("td.notes");
+            // Erase any previous error message in Notes column 
+            notes.html("&nbsp;");
+
             var km = parseFloat($(this).val());
             var miles = (0.621371 * km).toFixed(1);
             console.log("Converted " + km + " km to " + miles + " miles");
-            var control_entry = $(this).parents(".control")
             var target = control_entry.find("input[name='miles']");
             target.val(miles);
 
@@ -65,10 +70,15 @@ $(document).ready(function () {
 
     $('input[name="miles"]').change(
         function (event) {
+            var control_entry = $(this).parents(".control")
+
+            var notes = control_entry.find("td.notes");
+            // Erase any previous error message in Notes column 
+            notes.html("&nbsp;");
+
             var miles = parseFloat($(this).val());
             var km = (1.609344 * miles).toFixed(1);
             console.log("Converted " + miles + " miles to " + km + " kilometers");
-            var control_entry = $(this).parents(".control")
             var target = control_entry.find("input[name='km']");
             target.val(km);
 
@@ -127,7 +137,7 @@ $(document).ready(function () {
                     // TODO Maybe change this so that submit only occurs if open/close time nonempty
                     console.log(`Inside of setTimeout, this is ${this}`);
                     document.getElementById('mainForm').submit();
-                }.bind(this), 350);
+                }.bind(this), 1000);
             // }
         }
     );

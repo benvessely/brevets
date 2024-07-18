@@ -16,11 +16,9 @@ function calc_times(control) {
     var begin_date = $("#begin_date");
     var begin_time = $("#begin_time");
 
-    /* 
-    console.log(`distance.val() = ${distance.val()}, \
-        begin_date.val() = ${begin_date.val()}, \ 
-        begin_time.val() = ${begin_time.val()}`); //DB 
-    */
+    // console.log(`distance.val() = ${distance.val()}, \
+    //     begin_date.val() = ${begin_date.val()}, \ 
+    //     begin_time.val() = ${begin_time.val()}`); //DB 
     $.getJSON(TIME_CALC_URL, {
         km: km_val, brevet_dist: distance.val(),
         begin_date: begin_date.val(), begin_time: begin_time.val()
@@ -118,7 +116,8 @@ $(document).ready(function () {
                 if (index < table_inputs.length - 5) {
                     // Focus the input element directly below, or 5 right in the array
                     table_inputs[index + 5].focus();
-                } else { // If in last row, return key just moves focus one to right
+                } else { 
+                    // If in last row, return key focuses the submit button
                     $("#submit").focus();
                 }
             }
@@ -129,16 +128,27 @@ $(document).ready(function () {
     // Delay submission on press of submit button so that form AJAX fills out
     document.getElementById('submitInput').addEventListener('click',
         function (event) {
-            // Only change behavior of Submit button (not Display)
-            // if (event.target.id == "submitInput") {
-                event.preventDefault();
-                console.log(`Delaying mainForm submission`); //DB
-                setTimeout(function () {
-                    // TODO Maybe change this so that submit only occurs if open/close time nonempty
-                    console.log(`Inside of setTimeout, this is ${this}`);
+            event.preventDefault();
+            console.log(`Delaying mainForm submission`); //DB
+            setTimeout(function () {
+                // Check that all "notes" elements are empty, i.e. no errors
+                var allEmpty = 
+                Array.from(document.querySelectorAll('td[name="notes"]')).every(function(td) {
+                    return td.textContent.trim() === '';
+                });
+                if(allEmpty) {
+                    console.log(`Notes all empty; submitting form`);
+                    document.getElementById('errorArea').innerHTML = "";
                     document.getElementById('mainForm').submit();
-                }.bind(this), 1000);
-            // }
+                } else {
+                    console.log(`At least one note is non-empty; form not submitted`); 
+                    document.getElementById('errorArea').innerHTML = 
+                        "Submit unsuccessful: there is at least one error in the table.";
+                }
+            }, 250);
         }
     );
+
+    
+
 });

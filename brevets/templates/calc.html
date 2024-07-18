@@ -55,9 +55,6 @@
       </div> <!-- row -->
 
       <br /> <!-- Cosmetic -- a little vertical space -->
-      
-      <!-- Errors go in this p tag -->
-      <p id="errorMessages"></p>
 
       <div class="row">
         <div class="col-md-12">
@@ -70,7 +67,7 @@
               <th>Close</th>
               <th>Notes</th>
             </tr>
-            {% for row in range(20) %}
+            {% for row in range(15) %}
             <tr class="control">
               <!-- Dist (mi) -->
               <td><input name="miles" type="number" step=.1 min="0" max="900" size="5" /></td>
@@ -90,17 +87,18 @@
         </div> <!-- col -->
       </div> <!-- row -->
 
+      <br> 
+
       <!-- Using html formactions, which allow different actions to be performed on the 
    form based on which button was pressed. The default action (specified at the
    opening tag for the form) is "/submit", and the custom action is "/display" -->
       <input type="submit" value="Submit" id="submitInput">
       <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
 
-      {% with messages = get_flashed_messages() %}
-      {% if messages|length != 0 %}
-      <p class="message"> {{messages[0]}}</p>
-      {% endif %}
-      {% endwith %}
+      <br>
+
+      <p id="errorArea"></p>
+
     </form>
 
 

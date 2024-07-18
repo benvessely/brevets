@@ -1,10 +1,13 @@
 /*
  * Styles for ACP control calculator
- * (Fill in as desired)
  *
  * These should not conflict with bootstrap's CSS, but they may 
  * add more specific styles. 
  */
+
+td {
+    min-height: 300px; 
+}
 
 .notes {
     min-width: 150px; 
@@ -13,4 +16,9 @@
 
 .message {
     color: red; 
+}
+
+#errorArea {
+    color:red; 
+    font-size: 15;
 }

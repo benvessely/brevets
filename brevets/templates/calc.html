@@ -17,13 +17,11 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
   </script>
 
-  <!-- moment.js is the JavaScript equivalent of arrow.py -->
   <script src="{{ url_for('static', filename="js/moment.min.js") }}"></script>
 
 
 </head>
 
-<!-- Our own style sheet -->
 <link rel="stylesheet" href="/static/css/calc.css" />
 
 <body>
@@ -34,7 +32,6 @@
     <p>This worksheet is for ACP-sanctioned brevets between 200 and 1000 kilometers</p>
 
 
-    <!-- Design on bootstrap grid -->
     <form role="form" action="/submit" method="POST" id="mainForm">
       <div class="row">
         <div class="col-md-4">
@@ -52,9 +49,9 @@
           <input type=date name="begin_date" id="begin_date" value="2017-01-01" class="startOptions" />
           <input type=time name="begin_time" id="begin_time" value="00:00" class="startOptions" />
         </div> <!-- columns 5-10 -->
-      </div> <!-- row -->
+      </div> 
 
-      <br /> <!-- Cosmetic -- a little vertical space -->
+      <br /> 
 
       <div class="row">
         <div class="col-md-12">
@@ -69,29 +66,21 @@
             </tr>
             {% for row in range(15) %}
             <tr class="control">
-              <!-- Dist (mi) -->
               <td><input name="miles" type="number" step=.1 min="0" max="900" size="5" /></td>
-              <!-- Dist (km) -->
               <td><input name="km" type="number" step=.1 min="0" max="1100" size="5" /> </td>
-              <!-- Location (optional) -->
               <td><input name="location" type="text" placeholder="Optional location name" size="20" /> </td>
-              <!-- Open time (read only, set by JavaScript function -->
               <td><input name="open" type="datetime" value="" readonly /></td>
-              <!-- Close time (read only, set by JavaScript function -->
               <td><input name="close" type="datetime" value="" readonly /></td>
-              <!-- Notes (error messages for this row) -->
-              <td name="notes" class="notes"> &nbsp; </td>
+              <td name="notes" class="notes"><div class=notesDiv>&nbsp; </div></td>
             </tr>
             {% endfor %}
           </table>
-        </div> <!-- col -->
-      </div> <!-- row -->
+        </div> 
+      </div> 
 
       <br> 
 
-      <!-- Using html formactions, which allow different actions to be performed on the 
-   form based on which button was pressed. The default action (specified at the
-   opening tag for the form) is "/submit", and the custom action is "/display" -->
+      <!-- Using html formactions, which allow different actions to be performed on the form based on which button was pressed. The default action (specified at the opening tag for the form) is "/submit", and the custom action is "/display" -->
       <input type="submit" value="Submit" id="submitInput">
       <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
 

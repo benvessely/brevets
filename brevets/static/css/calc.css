@@ -4,13 +4,15 @@
  * These should not conflict with bootstrap's CSS, but they may 
  * add more specific styles. 
  */
+/* 
+.notesDiv { 
+    height: 50px; 
+    overflow: visible; 
+} */
 
-td {
-    min-height: 300px; 
-}
-
-.notes {
-    min-width: 150px; 
+.notes { 
+    height: 40px; 
+    min-width: 300px; 
     color: red; 
 } 
 

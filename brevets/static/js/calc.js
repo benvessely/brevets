@@ -145,7 +145,7 @@ $(document).ready(function () {
                     document.getElementById('errorArea').innerHTML = 
                         "Submit unsuccessful: there is at least one error in the table.";
                 }
-            }, 250);
+            }, 175);
         }
     );
 

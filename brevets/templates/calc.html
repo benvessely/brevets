@@ -64,7 +64,7 @@
               <th>Close</th>
               <th>Notes</th>
             </tr>
-            {% for row in range(15) %}
+            {% for row in range(7) %}
             <tr class="control">
               <td><input name="miles" type="number" step=.1 min="0" max="900" size="5" /></td>
               <td><input name="km" type="number" step=.1 min="0" max="1100" size="5" /> </td>
@@ -80,11 +80,11 @@
 
       <br> 
 
-      <!-- Using html formactions, which allow different actions to be performed on the form based on which button was pressed. The default action (specified at the opening tag for the form) is "/submit", and the custom action is "/display" -->
+      <!-- Using html formactions, which allow different actions to be performed on the form based on which button was pressed. The defadcult action (specified at the opening tag for the form) is "/submit", and the custom action is "/display" -->
       <input type="submit" value="Submit" id="submitInput">
       <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
 
-      <br>
+      <br><br>
 
       <p id="errorArea"></p>
 

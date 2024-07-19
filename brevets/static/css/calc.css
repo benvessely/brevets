@@ -11,8 +11,9 @@
 } */
 
 .notes { 
-    height: 40px; 
-    min-width: 300px; 
+    height: 70px; 
+    min-width: 200px; 
+    /* min-width: 300px;  */
     color: red; 
 } 
 

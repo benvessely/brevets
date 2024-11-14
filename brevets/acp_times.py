@@ -8,7 +8,7 @@ import arrow
 
 # Each element from the table is a tuple of four elements. The first and second 
 # attributes of the tuple are the lower and upper bounds, respectively, of an
-# interval (km) on which minimum and maximum speeds will be defined. The third 
+# interval (km) on which the minimum and maximum speeds will be defined. The third 
 # attribute of the tuple is the minimum speed (km/hr) on that interval, and the
 # fourth attribute is the maximum speed (km/hr) on that interval. 
 SPEEDS = [(0, 200, 15, 34), (200, 400, 15, 32), (400, 600, 15, 30), 
@@ -34,16 +34,9 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
     # print(f"MY DEBUG: brevet_start_time = {brevet_start_time}")
     arw_begin = arrow.get(brevet_start_time) 
 
-    year = arw_begin.year
-    month = arw_begin.month
-    day = arw_begin.day
-    hour = arw_begin.hour
-    minute = arw_begin.minute
-
-    hour_decimal = hour + minute / 60 
     time_delta_hours = time_to_open(control_dist_km, brevet_dist_km)
 
-    # If we got an error tuple, return that tuple 
+    # If we got an error list, return that list
     if isinstance(time_delta_hours, list): 
         return time_delta_hours
   
@@ -62,14 +55,6 @@ def time_to_open(control_dist_km, brevet_dist_km):
         return [False, "Control distance must not be more than 20% larger "
                          + "than brevet distance."]
 
-    # This code is actually not used for open times, as for open times the 
-    # calculator just uses the algorithm time, not the special table time 
-    # if brevet_dist_km <= control_dist_km and \
-    #         control_dist_km <= (brevet_dist_km * 1.2): 
-    #     print(f"MY DEBUG: Control within 20% after brevet" + 
-    #           f" returning {BREVET_TIMES[brevet_dist_km][0]}")
-    #     return BREVET_TIMES[brevet_dist_km][0]
-    
     # If control is within 20% after the brevet, just treat the control 
     # distance as equal to the brevet distance. Open times for brevet 
     # distance are dealt with via the algorithm, not via the special cases
@@ -88,7 +73,7 @@ def time_to_open(control_dist_km, brevet_dist_km):
         # print(f"MY DEBUG: remaining_dist = {remaining_dist}, " + 
         #        f"interval_num = {interval_num}, time_delta = {time_delta}") #DB 
         interval_size = SPEEDS[interval_num][1] - SPEEDS[interval_num][0]
-        # Use max in case remaining_dist is shorter than the considered interval
+        # Use min in case remaining_dist is shorter than the considered interval
         dist_in_interval =  min(interval_size, remaining_dist)
         max_speed = SPEEDS[interval_num][3]
         # print(f"MY DEBUG: dist_in_interval = {dist_in_interval}, " + 
@@ -122,16 +107,9 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
     print(f"MY DEBUG: brevet_start_time = {brevet_start_time}")
     arw_begin = arrow.get(brevet_start_time) 
 
-    year = arw_begin.year
-    month = arw_begin.month
-    day = arw_begin.day
-    hour = arw_begin.hour
-    minute = arw_begin.minute
-
-    hour_decimal = hour + minute / 60 
     time_delta_hours = time_to_close(control_dist_km, brevet_dist_km)
 
-    # If we got an error tuple, return that tuple 
+    # If we got an error array, return that array 
     if isinstance(time_delta_hours, list): 
         return time_delta_hours
 
@@ -166,12 +144,12 @@ def time_to_close(control_dist_km, brevet_dist_km):
         # print(f"MY DEBUG: remaining_dist = {remaining_dist}, " + 
         #        f"interval_num = {interval_num}, time_delta = {time_delta}") #DB 
         interval_size = SPEEDS[interval_num][1] - SPEEDS[interval_num][0]
-        # Use max in case remaining_dist is shorter than the considered interval
+        # Use min in case remaining_dist is shorter than the considered interval
         dist_in_interval =  min(interval_size, remaining_dist)
-        max_speed = SPEEDS[interval_num][2]
+        min_speed = SPEEDS[interval_num][2]
         # print(f"MY DEBUG: dist_in_interval = {dist_in_interval}, " + 
         #        f"max_speed = {max_speed}") #DB
-        time_delta += dist_in_interval / max_speed
+        time_delta += dist_in_interval / min_speed
         # Decrease remaining_dist so that we can consider the next speed interval
         remaining_dist -= interval_size
         interval_num += 1

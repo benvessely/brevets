@@ -1,38 +1,27 @@
 """ Replacement for RUSA ACP brevet time calculator
 (see https://rusa.org/octime_acp.html)
-
 """
 
-import flask
 from flask import Flask, redirect, url_for, request, render_template, flash
-import arrow  # Replacement for datetime, based on moment.js
-import acp_times  # Brevet time calculations
+import arrow  
+import acp_times  
 import config 
 import logging
 from pymongo import MongoClient
 import os
+import flask
 from bson.json_util import dumps, loads 
 from flask_restful import Resource, Api, reqparse
 
 
-###
-# Globals
-###
 app = flask.Flask(__name__)
 api = Api(app)
 CONFIG = config.configuration()
-app.secret_key = CONFIG.SECRET_KEY
+app.secret_key = CONFIG.SECRET_KEY 
 
 
-###
-# Setup Database
-###
 client = MongoClient(os.environ['DB_PORT_27017_TCP_ADDR'], 27017)
 db = client.controlsdb
-
-###
-# Pages
-###
 
 
 @app.route("/")
@@ -49,12 +38,6 @@ def page_not_found(error):
     return flask.render_template('404.html'), 404
 
 
-###############
-#
-# AJAX request handlers
-#   These return JSON, rather than rendering pages.
-#
-###############
 @app.route("/_calc_times")
 def _calc_times():
     """
@@ -114,7 +97,6 @@ def submit():
             'close': close_times[i]
         }
 
-        # Input stuff into database here 
         db.controls.insert_one(new_doc)
         i += 1
 

@@ -1,11 +1,10 @@
 
+// SCRIPT_ROOT defined in calc.html
 var TIME_CALC_URL = SCRIPT_ROOT + "/_calc_times";
 
 // Pass calctimes a <td> element containing the data for a control.
 // It extracts the distance and calls the server to get times to
 // fill in open and close times in a human-readable format.
-// (If we want to also keep the ISO-formatted times, we'll need to
-// stash them in hidden fields.) 
 function calc_times(control) {
     console.log(`At start of calc_times()`);
     var km_val = control.find("input[name='km']").val();

@@ -24,4 +24,6 @@
 #errorArea {
     color:red; 
     font-size: 15;
+    display: inline-block; 
+    padding-left: 4%;
 }

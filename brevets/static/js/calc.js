@@ -45,6 +45,7 @@ function calc_times(control) {
     );
 }
 
+
 $(document).ready(function () {
     
     $('input[name="km"]').change(
@@ -147,6 +148,20 @@ $(document).ready(function () {
             }, 50);
         }
     );
+    
+
+
+    function checkWidth() { let div = document.getElementById('container-div');
+        // console.log(`In checkWidth()`); //DB 
+        // console.log(`div = ${div}`) //DB
+        if (window.innerWidth < 1000) {
+            div.className = "container-fluid"; 
+        } else { 
+            div.className = "container";
+        }
+    } 
+    checkWidth() 
+    window.addEventListener('resize', checkWidth); 
 
     
 

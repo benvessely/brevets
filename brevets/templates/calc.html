@@ -5,20 +5,16 @@
 <head>
   <title>ACP Controle Times</title>
 
-  <!-- 'viewport' is used by bootstrap to respond to device size -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Javascript:  JQuery from a content distribution network (CDN) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
   </script>
 
-  <!-- Bootstrap includes javascript and css  (must follow jquery) -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
   </script>
 
   <script src="{{ url_for('static', filename="js/moment.min.js") }}"></script>
-
 
 </head>
 
@@ -26,7 +22,7 @@
 
 <body>
   <!-- bootstrap requires a 'container' div around content -->
-  <div class="container">
+  <div id="container-div" class="container-fluid">
 
     <h1>ACP Brevet Times</h1>
     <p>This worksheet is for ACP-sanctioned brevets between 200 and 1000 kilometers</p>
@@ -78,18 +74,12 @@
         </div> 
       </div> 
 
-      <br> 
-
       <!-- Using html formactions, which allow different actions to be performed on the form based on which button was pressed. The default action (specified at the opening tag for the form) is "/submit", and the custom action is "/display" -->
       <input type="submit" value="Submit" id="submitInput">
       <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
-
-      <br><br>
-
       <p id="errorArea"></p>
 
     </form>
-
 
     <!-- SCRIPT_ROOT variable used in the calc.js file below; defined here for templating -->
     <script>

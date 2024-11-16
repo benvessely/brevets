@@ -13,8 +13,9 @@
 .notes { 
     height: 70px; 
     min-width: 200px; 
-    /* min-width: 300px;  */
+    max-width: 250px; 
     color: red; 
+    padding-left: 3px; 
 } 
 
 .message {

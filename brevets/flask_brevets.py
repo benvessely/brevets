@@ -46,7 +46,7 @@ def _calc_times():
     Expects one URL-encoded argument, the number of miles.
     """
     app.logger.debug("Got a JSON request")
-    km = request.args.get('km', 999, type=float)
+    km = request.args.get('km', 0, type=float)
     brevet_dist = request.args.get('brevet_dist', type=int)
     begin_time = request.args.get('begin_time') 
     begin_date = request.args.get('begin_date')
@@ -114,7 +114,6 @@ def display():
         return redirect(url_for('index'))
     else:
         return render_template("display.html", controls=loads(dumps(controls)))
-
 
 
 ###

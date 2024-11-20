@@ -22,9 +22,15 @@
     color: red; 
 }
 
+.datetime-input { 
+    max-width: 130px; 
+}
+
 #errorArea {
     color:red; 
     font-size: 15;
     display: inline-block; 
     padding-left: 4%;
 }
+
+

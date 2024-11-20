@@ -21,8 +21,8 @@
 <link rel="stylesheet" href="/static/css/calc.css" />
 
 <body>
-  <!-- bootstrap requires a 'container' div around content -->
-  <div id="container-div" class="container-fluid">
+  <!-- Class here is modified dynamically in javascript--> 
+  <div id="container-div" > 
 
     <h1>ACP Brevet Times</h1>
     <p>This worksheet is for ACP-sanctioned brevets between 200 and 1000 kilometers</p>
@@ -64,8 +64,8 @@
               <td><input name="miles" type="number" step=.1 min="0" max="900" size="5" /></td>
               <td><input name="km" type="number" step=.1 min="0" max="1100" size="5" /> </td>
               <td><input name="location" type="text" placeholder="Optional location name" size="20" /> </td>
-              <td><input name="open" type="datetime" value="" readonly /></td>
-              <td><input name="close" type="datetime" value="" readonly /></td>
+              <td><input name="open" type="datetime" value="" readonly class="datetime-input"/></td>
+              <td><input name="close" type="datetime" value="" readonly class="datetime-input"/></td>
               <td name="notes" class="notes"><div class=notesDiv>&nbsp; </div></td>
             </tr>
             {% endfor %}

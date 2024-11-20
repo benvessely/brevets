@@ -159,7 +159,7 @@ $(document).ready(function () {
     );
     
 
-
+    // Makes table fit slightly better on smaller screens 
     function checkWidth() { let div = document.getElementById('container-div');
         // console.log(`In checkWidth()`); //DB 
         // console.log(`div = ${div}`) //DB

@@ -15,34 +15,43 @@ function calc_times(control) {
     var begin_date = $("#begin_date");
     var begin_time = $("#begin_time");
 
-    // console.log(`distance.val() = ${distance.val()}, \
-    //     begin_date.val() = ${begin_date.val()}, \ 
-    //     begin_time.val() = ${begin_time.val()}`); //DB 
-    $.getJSON(TIME_CALC_URL, {
-        km: km_val, brevet_dist: distance.val(),
-        begin_date: begin_date.val(), begin_time: begin_time.val()
-        },
-        // response handler
-        function (data) {
-            var times = data.result;
-            console.log("Got a response: " + JSON.stringify(times));
-            console.log("Response.open = " + times.open);
-            // console.log(`moment.utc(times.open) = ${moment(times.open)}`);
-            // console.log(`Type of Response.open is ${typeof times.open}`);
-            // If we had valid control distance and thus server returned isoformat string,
-            // we check times.open since also checking times.close is redundant here
-            if (typeof times.open === 'string') {
-                open_time_field.val(moment.utc(times.open).format("ddd M/D H:mm"));
-                close_time_field.val(moment.utc(times.close).format("ddd M/D H:mm"));
+    var km_val_float = parseFloat(km_val); 
+    // When the empty string is converted using parseFloat, it shows up as NaN,
+    // which we check for here,
+    if (isNaN(km_val_float)) { 
+		// console.log(`km_val_float = ${km_val_float}`); 
+		// console.log(`typeof km_val_float = ${typeof km_val_float}`); 
+		// console.log(`isNaN(km_val_float) = ${isNaN(km_val_float)}`);
+        open_time_field.val("");
+        close_time_field.val("");
+    } else { 
+        $.getJSON(TIME_CALC_URL, {
+            km: km_val, brevet_dist: distance.val(),
+            begin_date: begin_date.val(), begin_time: begin_time.val()
+            },
+            // response handler
+            function (data) {
+                var times = data.result;
+                console.log("Got a response: " + JSON.stringify(times));
+                console.log("Response.open = " + times.open);
+                // console.log(`moment.utc(times.open) = ${moment(times.open)}`);
+                // console.log(`Type of Response.open is ${typeof times.open}`);
+                // If we had valid control distance and thus server returned
+                // isoformat string,
+                // we check times.open since also checking times.close is redundant here
+                if (typeof times.open === 'string') {
+                    open_time_field.val(moment.utc(times.open).format("ddd M/D H:mm"));
+                    close_time_field.val(moment.utc(times.close).format("ddd M/D H:mm"));
+                }
+                // Else if we returned an error list containing boolean and error message
+                else {
+                    var notes = control.find(".notes");
+                    console.log(`Setting notes.val equal to ${times.open[1]}`);
+                    notes.text(times.open[1]);
+                }
             }
-            // Else if we returned an error list containing boolean and error message
-            else {
-                var notes = control.find(".notes");
-                console.log(`Setting notes.val equal to ${times.open[1]}`);
-                notes.text(times.open[1]);
-            }
-        }
-    );
+        );
+    } 
 }
 
 

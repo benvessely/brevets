@@ -27,7 +27,7 @@
     <h1>ACP Brevet Times</h1>
     <p>This worksheet is for ACP-sanctioned brevets between 200 and 1000 kilometers</p>
 
-    <form role="form" action="/submit" method="POST" id="mainForm">
+    <form role="form" action="/display" method="GET" id="mainForm">
       <div class="row">
         <div class="col-md-4">
           <label>Distance</label>
@@ -74,8 +74,8 @@
       </div> 
 
       <!-- Using html formactions, which allow different actions to be performed on the form based on which button was pressed. The default action (specified at the opening tag for the form) is "/submit", and the custom action is "/display" -->
-      <input type="submit" value="Submit" id="submitInput">
-      <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
+      <input type="submit" value="Submit" formaction="/submit" formmethod="POST" id="submitInput">
+      <input type="submit" value="Display"  id="displayInput">
       <input type="button" value="Clear" id="clearInput">    
 
       {% with messages = get_flashed_messages() %}

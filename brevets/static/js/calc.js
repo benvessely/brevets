@@ -1,5 +1,8 @@
+/* global $ */ 
+/* global moment */ 
 
 // SCRIPT_ROOT defined in calc.html
+/* eslint-disable-next-line no-undef */
 var TIME_CALC_URL = SCRIPT_ROOT + "/_calc_times";
 
 // Pass calctimes a <td> element containing the data for a control.
@@ -51,7 +54,7 @@ function calc_times(control) {
                 }
             }
         );
-    } 
+    }      
 }
 
 
@@ -90,7 +93,7 @@ $(document).ready(function () {
             target.val(km);
 
             calc_times(control_entry)
-        }
+        }  
     );
 
 
@@ -119,7 +122,7 @@ $(document).ready(function () {
     for (var i = 0; i < table_inputs.length; i++) {
         table_inputs[i].addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
-                e.preventDefault();  // Prevent form submission
+                e.preventDefault(); 
                 var index = Array.prototype.indexOf.call(table_inputs, e.target);
                 // Check if index not in last row 
                 if (index < table_inputs.length - 5) {
@@ -155,7 +158,7 @@ $(document).ready(function () {
                         "Submit unsuccessful: there is at least one error in the table.";
                 }
             }, 50);
-        }
+        }  
     );
     
 
@@ -203,5 +206,46 @@ $(document).ready(function () {
             noteDiv.innerHTML = ''; 
         });
     }
+    
+
+    function isTableEmpty() {
+        const inputs = document.querySelectorAll('.control_time_table input');
+        
+        for (const input of inputs) {
+            console.log(`input = ${input}, input.type is ${input.type}`);
+            if (input.type === 'number') {
+                if (input.value !== '') {
+                    return false;
+                }
+            }
+            else if (input.type === 'datetime') {
+                if (input.value !== '') {
+                    return false;
+                }
+            }
+            else if (input.type === 'text') {
+                if (input.value.trim() !== '') {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    document.getElementById('displayInput').addEventListener('click', function(event) {
+        
+        event.preventDefault(); 
+
+        if (isTableEmpty()) {  
+            console.log(`Table empty, attempting to display`); 
+            const form = this.closest('form'); 
+            form.submit();   
+        } else { 
+            console.log(`Table not empty, display fails`); 
+            const errorArea = document.getElementById('errorArea'); 
+            errorArea.textContent = 'Display failed: table is not empty, please submit or clear'; 
+        }     
+    }); 
 
 }); 

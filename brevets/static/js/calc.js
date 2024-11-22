@@ -172,6 +172,36 @@ $(document).ready(function () {
     checkWidth() 
     window.addEventListener('resize', checkWidth); 
 
-    
 
-});
+    const clearButton = document.getElementById('clearInput');
+    clearButton.addEventListener('click', clearForm);
+
+    function clearForm() {
+        console.log(`In clearForm()`); 
+
+        document.getElementById('brevet_dist_km').selectedIndex = 0;
+        document.getElementById('begin_date').value = '2017-01-01';
+        document.getElementById('begin_time').value = '00:00';
+        
+        const inputs = document.querySelectorAll('.control input[type="number"], .control input[type="text"]');
+        inputs.forEach(input => {
+            input.value = '';
+        });
+        
+        const datetimeInputs = document.querySelectorAll('.datetime-input');
+        datetimeInputs.forEach(input => {
+            input.value = '';
+        });
+        
+        const errorArea = document.getElementById('errorArea');
+        if (errorArea) {
+            errorArea.textContent = '';
+        } 
+
+        const notesDivs = document.querySelectorAll('.notes');
+        notesDivs.forEach(noteDiv => {
+            noteDiv.innerHTML = ''; 
+        });
+    }
+
+}); 

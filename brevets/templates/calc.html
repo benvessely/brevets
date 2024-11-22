@@ -76,6 +76,8 @@
       <!-- Using html formactions, which allow different actions to be performed on the form based on which button was pressed. The default action (specified at the opening tag for the form) is "/submit", and the custom action is "/display" -->
       <input type="submit" value="Submit" id="submitInput">
       <input type="submit" value="Display" formaction="/display" formmethod="GET" id="displayInput">
+      <input type="button" value="Clear" id="clearInput">    
+
       {% with messages = get_flashed_messages() %}
       {% if messages|length != 0 %}
        <p id="errorArea">{{messages[0]}}</p>      

@@ -42,7 +42,7 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
   
     time_delta_mins = int(round(time_delta_hours * 60))
     open_time = arw_begin.shift(minutes=+time_delta_mins) 
-    print(f"MY DEBUG: Open time is {open_time}") 
+    # print(f"MY DEBUG: Open time is {open_time}") 
 
     return open_time.isoformat() 
 
@@ -104,7 +104,7 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
        An ISO 8601 format date string indicating the control close time.
        This will be in the same time zone as the brevet start time.
     """
-    print(f"MY DEBUG: brevet_start_time = {brevet_start_time}")
+    # print(f"MY DEBUG: brevet_start_time = {brevet_start_time}")
     arw_begin = arrow.get(brevet_start_time) 
 
     time_delta_hours = time_to_close(control_dist_km, brevet_dist_km)
@@ -115,7 +115,7 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
 
     time_delta_mins = int(round(time_delta_hours * 60))
     close_time = arw_begin.shift(minutes=+time_delta_mins) 
-    print(f"MY DEBUG: Close time is {close_time}") 
+    # print(f"MY DEBUG: Close time is {close_time}") 
 
     return close_time.isoformat() 
 
@@ -130,14 +130,14 @@ def time_to_close(control_dist_km, brevet_dist_km):
     # If control within 20% after brevet finish (including brevet finish), treat control distance as if it were brevet distance
     if brevet_dist_km <= control_dist_km and \
             control_dist_km <= (brevet_dist_km * 1.2): 
-        print(f"MY DEBUG: Control within 20% after brevet" + 
+        # print(f"MY DEBUG: Control within 20% after brevet" + 
               f" returning {BREVET_TIMES[brevet_dist_km][1]}")
         return BREVET_TIMES[brevet_dist_km][1]
     
     time_delta = 0 
     interval_num = 0
     remaining_dist = control_dist_km
-    # print(f"MY DEBUG: control_dist_km = {control_dist_km}, " + 
+    # # print(f"MY DEBUG: control_dist_km = {control_dist_km}, " + 
     #         f"brevet_dist_km = {brevet_dist_km}")
     # print(f"\nMY DEBUG: Entering while loop")
     while remaining_dist > 0:
@@ -156,5 +156,5 @@ def time_to_close(control_dist_km, brevet_dist_km):
         # print(f"MY DEBUG: remaining_dist = {remaining_dist}, " + 
         #         f" time_delta = {time_delta}") #DB 
 
-    print(f"MY DEBUG: While loop done, output of time_to_close: {time_delta}\n") #DB 
+    # print(f"MY DEBUG: While loop done, output of time_to_close: {time_delta}\n") #DB 
     return time_delta 

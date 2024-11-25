@@ -72,6 +72,10 @@ The distance for a control should be any value between 0 and 1.2 times the breve
 For our calculator, the user will input a brevet distance, start date, and start time at the top of the page. Then, after the user inputs a control distance into either the miles or kilometers box in any row of the table below, the open and close times for that control will be automatically populated, as will the remaining mile/kilometer box. This is implemented using AJAX to increase the reactivity of the page.
 
 
+## Testing Application Logic
+There is a nose testing suite in the `/brevets/tests` directory that tests the application logic, i.e. the logic relating to the actual calculation of the open and close times. These tests can be ran by entering the `brevets` directory, running `docker-compose build tests` to build the tests service, then running `docker-compose run tests` to execute the tests. 
+
+
 ## MongoDB Database Functionality
 The table on the client side interacts with MongoDB via two buttons. The first is the "Submit" button, which sends an HTTP POST request to enter the data from the table into a database, while the "Display" button sends an HTTP GET request to get the data from the database and display it on a new page. 
 

@@ -27,5 +27,12 @@ services:
     depends_on:
       - brevets-and-api
       - db 
+  tests:
+    build: 
+      context: .
+      dockerfile: Dockerfile.tests
+    command: nose2 
+    volumes:
+      - .:/app
 volumes: 
   dbdata:

@@ -145,7 +145,8 @@ $(document).ready(function () {
             setTimeout(function () {
                 // Check that all "notes" elements are empty, i.e. no errors
                 var allEmpty = 
-                Array.from(document.querySelectorAll('td[name="notes"]')).every(function(td) {
+                Array.from(document.querySelectorAll('td[name="notes"]')).every(
+                        function(td) {
                     return td.textContent.trim() === '';
                 });
                 if(allEmpty) {
@@ -240,7 +241,11 @@ $(document).ready(function () {
         if (isTableEmpty()) {  
             console.log(`Table empty, attempting to display`); 
             const form = this.closest('form'); 
-            form.submit();   
+            form.action = '/display';
+            form.method = 'GET';
+            form.submit(); 
+            form.action = '/submit';
+            form.method = 'POST'; 
         } else { 
             console.log(`Table not empty, display fails`); 
             const errorArea = document.getElementById('errorArea'); 

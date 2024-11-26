@@ -21,13 +21,14 @@
 <link rel="stylesheet" href="/static/css/calc.css" />
 
 <body>
-  <!-- Class here is modified dynamically in javascript--> 
+  <!-- id here is modified dynamically in javascript--> 
   <div id="container-div" > 
 
     <h1>ACP Brevet Times</h1>
     <p id="instructions">This worksheet is for ACP-sanctioned brevets between 200 and 1000 kilometers. Enter controle point distances in the miles or kilometers box, after which the open and close times will fill out automatically.</p>
 
-    <form role="form" action="/display" method="GET" id="mainForm">
+    <!-- Action and method here are modified by Javascript for display button --> 
+    <form role="form" action="/submit" method="POST" id="mainForm">
       <div class="row">
         <div class="col-md-3">
           <label>Distance</label>
@@ -73,8 +74,7 @@
         </div> 
       </div> 
 
-      <!-- Using html formactions, which allow different actions to be performed on the form based on which button was pressed. The default action (specified at the opening tag for the form) is "/submit", and the custom action is "/display" -->
-      <input type="submit" value="Submit" formaction="/submit" formmethod="POST" id="submitInput">
+      <input type="submit" value="Submit" id="submitInput">
       <input type="submit" value="Display"  id="displayInput">
       <input type="button" value="Clear" id="clearInput">    
 

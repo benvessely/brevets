@@ -15,7 +15,7 @@ git clone https://github.com/benvessely/brevets.git
 You will need the Docker Desktop app downloaded in order to run my app, for which the download links and install instructions can be found [here](https://docs.docker.com/get-started/introduction/get-docker-desktop/).
 To start the program, simply enter the `brevets` subdirectory and run 
 ```bash
-docker-compose up --build
+docker-compose up
 ```
 In your browser, `localhost:5000/index` should show the index page for the calculator. The API endpoints can be accessed via `localhost:5000/{endpoint}`, where the possible endpoints are described below. There is also a basic PHP consumer program to consume the API services, which can be found at `localhost:5001`. Note that the port numbers shown here can be changed at any time within the `brevets/docker-compose.yml` file.
 
@@ -73,7 +73,7 @@ For our calculator, the user will input a brevet distance, start date, and start
 
 
 ## Testing Application Logic
-There is a nose testing suite in the `/brevets/tests` directory that tests the application logic, i.e. the logic relating to the actual calculation of the open and close times. These tests can be ran by entering the `brevets` directory, running `docker-compose build tests` to build the tests service, then running `docker-compose run tests` to execute the tests. 
+There is a nose testing suite in the `/brevets/tests` directory that tests the application logic, i.e. the logic relating to the actual calculation of the open and close times. These tests can be ran by entering the `brevets` directory, running `docker-compose build tests` to build the tests service (or just build it as part of `docker-compose up`), then running `docker-compose run --rm tests` to execute the tests. 
 
 
 ## MongoDB Database Functionality

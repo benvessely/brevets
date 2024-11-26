@@ -1,5 +1,5 @@
 services:
-  brevets-and-api:
+  server-and-api:
     build: .
     command: python3 -u flask_brevets.py
     ports:
@@ -23,9 +23,9 @@ services:
     ports:
       - 5001:80  # host:container
     links:
-      - brevets-and-api 
+      - server-and-api 
     depends_on:
-      - brevets-and-api
+      - server-and-api
       - db 
   tests:
     build: 

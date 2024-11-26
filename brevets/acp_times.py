@@ -131,7 +131,7 @@ def time_to_close(control_dist_km, brevet_dist_km):
     if brevet_dist_km <= control_dist_km and \
             control_dist_km <= (brevet_dist_km * 1.2): 
         # print(f"MY DEBUG: Control within 20% after brevet" + 
-              f" returning {BREVET_TIMES[brevet_dist_km][1]}")
+        #       f" returning {BREVET_TIMES[brevet_dist_km][1]}")
         return BREVET_TIMES[brevet_dist_km][1]
     
     time_delta = 0 

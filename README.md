@@ -15,8 +15,10 @@ git clone https://github.com/benvessely/brevets.git
 You will need the Docker Desktop app downloaded in order to run my app, for which the download links and install instructions can be found [here](https://docs.docker.com/get-started/introduction/get-docker-desktop/).
 To start the program, simply enter the `brevets` subdirectory and run 
 ```bash
-docker-compose up
+docker-compose up [--build]
 ```
+where the `--build` tag should be used after any changes are made to the code. 
+
 In your browser, `localhost:5000/index` should show the index page for the calculator. The API endpoints can be accessed via `localhost:5000/{endpoint}`, where the possible endpoints are described below. There is also a basic PHP consumer program to consume the API services, which can be found at `localhost:5001`. Note that the port numbers shown here can be changed at any time within the `brevets/docker-compose.yml` file.
 
 
@@ -55,7 +57,7 @@ $$
 
 Note that these calculations return time in hours, but we can convert the part after the decimal point to minutes by taking the numbers after the decimal point and multiplying by 60, and then rounding the result to the nearest integer. 
 
-To aid in understanding, it can be helpful to note that the logic is quite similar to the workings of tax brackets. As an example (with arbitrary rates), if someone earned \$40,000, the first \$10,000 are taxed at a rate of 10%, the next \$15,000 at a rate of 12%, and the last \$15,000 at a rate of 15%. The taxes that this person owes are then 
+To aid in understanding, it can be helpful to note that the logic is similar to the workings of tax brackets. As an example (with arbitrary rates), if someone earned \$40,000, the first \$10,000 are taxed at a rate of 10%, the next \$15,000 at a rate of 12%, and the last \$15,000 at a rate of 15%. The taxes that this person owes are then 
 $$ \$10,000 \cdot 0.10 + \$15,000 \cdot 0.12 + \$15,000 \cdot 0.15 = \$5,050. $$ 
 
 As an additional complication, for the brevet (finish line) time, the following close times are used (in hours and minutes, HH:MM): 13:30 for 200km, 20:00 for 300km, 27:00 for 400km, 40:00 for 600km, 75:00 for 1000km. Notice that these times are different than those calculated in the algorithm previously. In another unique case, if a control is greater than or equal to the brevet distance, simply take the close time for the control to be equal to the special close time for the brevet.
@@ -78,6 +80,10 @@ There is a nose testing suite in the `/brevets/tests` directory that tests the a
 
 ## MongoDB Database Functionality
 The table on the client side interacts with MongoDB via two buttons. The first is the "Submit" button, which sends an HTTP POST request to enter the data from the table into a database, while the "Display" button sends an HTTP GET request to get the data from the database and display it on a new page. 
+
+
+## Emptying Docker Volume with MongoDB Data
+If you want to clear the volume that holds the data for the MongoDB database on your local machine, find the name of the volume using `docker volume ls`, then remove it with `docker volume rm <volume-id>`. If it says that the volume is in use, find the id of the container that's using it using `docker ps -a`, remove the volume using `docker rm <container-id>`, then execute the previously given commands for removing the volume. 
 
 
 ## Test Cases for MongoDB

@@ -10,7 +10,7 @@
         <h3>All Brevet Times:</h3> 
         <ul> 
             <?php
-            $json = file_get_contents('http://brevets-and-api:5000/listAll');
+            $json = file_get_contents('http://server-and-api:5000/listAll');
             // echo "DEBUG: $json"; //DB 
             $obj = json_decode($json);
             $times = $obj->times;
@@ -24,10 +24,10 @@
             ?>
         </ul> 
 
-        <h3>First k Open Times with k=2:</h3> 
+        <h3>First k Open Times in Ascending Order with k=2:</h3> 
         <ul> 
             <?php
-            $json = file_get_contents('http://brevets-and-api:5000/listOpenOnly?top=2');
+            $json = file_get_contents('http://server-and-api:5000/listOpenOnly?top=2');
             // echo "DEBUG: $json"; //DB 
             $obj = json_decode($json);
             $times = $obj->times;
@@ -40,10 +40,10 @@
             ?>
         </ul> 
 
-        <h3>First k Close Times with k=2:</h3> 
+        <h3>First k Close Times in Ascending Order with k=2:</h3> 
         <ul> 
             <?php
-            $json = file_get_contents('http://brevets-and-api:5000/listCloseOnly?top=2');
+            $json = file_get_contents('http://server-and-api:5000/listCloseOnly?top=2');
             // echo "DEBUG: $json"; //DB 
             $obj = json_decode($json);
             $times = $obj->times;
@@ -60,7 +60,7 @@
         <h3>All Brevet Times in CSV format:</h3> 
         <ul> 
             <?php
-            $csv = file_get_contents('http://brevets-and-api:5000/listAll/csv');
+            $csv = file_get_contents('http://server-and-api:5000/listAll/csv');
             // Check if $csv is empty (has length 5 in this case)
             if (strlen($csv) == 5) {
                 echo ""; 
@@ -78,10 +78,10 @@
         </ul> 
 
 
-        <h3>First k Open Times in CSV format with k=2:</h3> 
+        <h3>First k Open Times in Ascending Order and CSV Format with k=2:</h3> 
         <ul> 
             <?php
-            $csv = file_get_contents('http://brevets-and-api:5000/listOpenOnly/csv?top=2');
+            $csv = file_get_contents('http://server-and-api:5000/listOpenOnly/csv?top=2');
             // $length = strlen($csv); //DB 
             // echo "DEBUG: strlen($csv) = $length <br>"; //DB 
 
@@ -100,10 +100,10 @@
             ?>
         </ul> 
 
-        <h3>First k Close Times in CSV format with k=2:</h3> 
+        <h3>First k Close Times in Ascending Order and CSV Format with k=2:</h3> 
         <ul> 
             <?php
-            $csv = file_get_contents('http://brevets-and-api:5000/listCloseOnly/csv?top=2');
+            $csv = file_get_contents('http://server-and-api:5000/listCloseOnly/csv?top=2');
             // echo "DEBUG: $csv<br>"; //DB 
 
             // Check if $csv is empty (has length 5 in this case)

@@ -145,31 +145,39 @@ const setupKeyboardNavigation = () => {
 };
 
 const setupFormButtons = () => {
-    document.getElementById('submitInput').addEventListener('click', (event) => {
-        event.preventDefault();
-        const errorArea = selectors.getErrorArea();
-        
-        new Promise(function(resolve) {
+
+    const waitForAjaxRequests = () => { 
+        return new Promise((resolve) => {
             if ($.active === 0) {
                 resolve(); 
             } else { 
                 $(document).one('ajaxStop', resolve);    
             }
         })
-        .then(() => {
+    }; 
+
+    const handleSubmit = async (event) => { 
+        event.preventDefault();
+        const errorArea = selectors.getErrorArea();
+         
+        try {  
+            await waitForAjaxRequests(); 
+
             if (areNotesEmpty()) {
                 errorArea.innerHTML = "";
                 document.getElementById('mainForm').submit();
             } else {
                 errorArea.innerHTML = "Submit unsuccessful: there is at least one error in the table.";
-            }
-        })
-        .catch(error => {
-            errorArea.innerHTML = "An error occurred while submitting the form.";
+            }; 
+        } catch (error) {
+            errorArea.innerHTML = "An error occurred while submitting the form." 
             console.error('Form submission error:', error);
-        });
-    });
+        }             
+    };
 
+    document.getElementById('submitInput').addEventListener('click', handleSubmit);  
+      
+     
     document.getElementById('clearInput').addEventListener('click', () => {
         document.getElementById('brevet_dist_km').selectedIndex = 0;
         document.getElementById('begin_date').value = '2017-01-01';

@@ -1,5 +1,5 @@
 /* global $, moment */
-
+;
 const TIME_CALC_URL = SCRIPT_ROOT + "/_calc_times";
 
 const convertKmToMiles = (km) => (0.621371 * parseFloat(km)).toFixed(1);
@@ -147,16 +147,27 @@ const setupKeyboardNavigation = () => {
 const setupFormButtons = () => {
     document.getElementById('submitInput').addEventListener('click', (event) => {
         event.preventDefault();
-        setTimeout(() => {
-            const errorArea = selectors.getErrorArea();
-            
+        const errorArea = selectors.getErrorArea();
+        
+        new Promise(function(resolve) {
+            if ($.active === 0) {
+                resolve(); 
+            } else { 
+                $(document).one('ajaxStop', resolve);    
+            }
+        })
+        .then(() => {
             if (areNotesEmpty()) {
                 errorArea.innerHTML = "";
                 document.getElementById('mainForm').submit();
             } else {
                 errorArea.innerHTML = "Submit unsuccessful: there is at least one error in the table.";
             }
-        }, 50);
+        })
+        .catch(error => {
+            errorArea.innerHTML = "An error occurred while submitting the form.";
+            console.error('Form submission error:', error);
+        });
     });
 
     document.getElementById('clearInput').addEventListener('click', () => {
